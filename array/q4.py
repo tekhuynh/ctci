@@ -1,5 +1,5 @@
 def palperm(s):
-    chars = list(s.lower().replace(' ', ''))
+    chars = s.lower().replace(' ', '')
 
     m = {}
 
