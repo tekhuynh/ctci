@@ -9,16 +9,27 @@ class Node:
 
 def is_bst(node):
     if node == None:
-        return True
+        return True, None, None
     if node.left == None and node.right == None:
-        return True
+        return True, node.val, node.val
     
-    if node.left != None and node.left.val >= node.val:
-        return False
-    if node.right != None and node.val >= node.right.val:
-        return False
+    isbst = False
+    leftisbst, leftmin, leftmax = is_bst(node.left)
+    rightisbst, rightmin, rightmax = is_bst(node.right)
+
+    if not leftisbst and rightisbst:
+        return False, 0, 0
+    if leftmax != None and leftmax > node.val:
+        return False, 0, 0
+    if rightmin != None and rightmin < node.val:
+        return False, 0, 0
     
-    return is_bst(node.left) and is_bst(node.right)
+    if leftmin == None:
+        leftmin = node.val
+    if rightmax == None:
+        rightmax = node.val
+
+    return True, leftmin, rightmax
 
 
 
