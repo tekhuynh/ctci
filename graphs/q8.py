@@ -8,25 +8,28 @@ class Node:
 
 def common_ancestor(root, val1, val2):
     if root == None:
-        return None
-    if root.val == val1:
-        return root
-    if root.val == val2:
-        return root
+        return None, False
 
-    left = common_ancestor(root.left, val1, val2)
-    if left != None and left.val != val1 and left.val != val2:
-        return left
-    right = common_ancestor(root.right, val1, val2)
-    if right != None and right.val != val1 and right.val != val2:
-        return right
+    left, lflag = common_ancestor(root.left, val1, val2)
+    if lflag:
+        return left, True
+    right, rflag = common_ancestor(root.right, val1, val2)
+    if rflag:
+        return right, True
+
+    if left != None and right != None:
+        return root, True
+
+    if root.val == val1 or root.val == val2:
+        if left == None and right == None:
+            return root, False
+        else:
+            return root, True
     
     if left == None:
-        return right
-    if right == None:
-        return left
-    
-    return root
+        return right, False
+    else:
+        return left, False
 
 
 def minimal_tree(values):
@@ -47,5 +50,11 @@ def minimal_tree(values):
 
 n = minimal_tree(range(15))
 
-print(common_ancestor(n, 1, 12).val)
-print(common_ancestor(n, 0, 2).val)
+node, found = common_ancestor(n, 1, 12)
+print(node.val, found)
+node, found = common_ancestor(n, 0, 2)
+print(node.val, found)
+node, found = common_ancestor(n, 0, 1)
+print(node.val, found)
+node, found = common_ancestor(n, 16, 12)
+print(node.val, found)
